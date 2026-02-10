@@ -14,6 +14,10 @@ This guide will walk you through deploying your Review Buddy application to Rail
 1. Go to your Railway dashboard.
 2. Click "New Project".
 3. Select "Deploy from GitHub repo" and choose your repository.
+4. **IMPORTANT**: Click on the new service "ReviewBuddy" (or whatever it was named).
+5. Go to **Settings** -> **General** -> **Root Directory**.
+6. Set it to: `review_buddy/nextjs_space`
+7. This is CRITICAL because your app is not in the root of the repo.
 
 ### 2. Add a Database
 
