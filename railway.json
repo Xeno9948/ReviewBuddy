@@ -1,5 +1,8 @@
 {
     "build": {
         "rootDirectory": "review_buddy/nextjs_space"
+    },
+    "deploy": {
+        "startCommand": "npx prisma db push && node .next/standalone/server.js"
     }
 }
