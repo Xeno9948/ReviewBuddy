@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "npx prisma db push && node .next/standalone/server.js",
+    "start": "npx prisma db push && HOSTname=0.0.0.0 node .next/standalone/server.js",
     "lint": "next lint",
     "postinstall": "prisma generate"
   },
