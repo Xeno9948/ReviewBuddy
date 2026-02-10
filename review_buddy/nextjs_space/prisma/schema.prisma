@@ -1,0 +1,164 @@
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String
+  role          String    @default("user")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  assignedReviews Review[] @relation("AssignedReviews")
+}
+
+model Review {
+  id                 String   @id @default(cuid())
+  externalId         String?  @unique
+  platform           String   @default("kiyoh")
+  reviewText         String   @db.Text
+  oneLiner           String?  @db.Text
+  rating             Int
+  reviewerName       String?
+  reviewerCity       String?
+  reviewerEmail      String?
+  reviewTimestamp    DateTime
+  
+  // Risk Assessment
+  contentRisk        String   @default("Low")
+  reputationalRisk   String   @default("Low")
+  contextualRisk     String   @default("Low")
+  piiDetected        Boolean  @default(false)
+  legalRiskDetected  Boolean  @default(false)
+  riskAssessmentJson String?  @db.Text
+  
+  // Decision
+  decision           String   @default("HOLD_FOR_APPROVAL")
+  confidenceScore    Int      @default(0)
+  decisionRationale  String?  @db.Text
+  
+  // Response
+  generatedResponse  String?  @db.Text
+  responseStatus     String   @default("pending")
+  responsePublishedAt DateTime?
+  
+  // Human Assignment
+  humanAssignedId    String?
+  humanAssigned      User?    @relation("AssignedReviews", fields: [humanAssignedId], references: [id])
+  humanActionTaken   String?
+  humanNotes         String?  @db.Text
+  
+  status             String   @default("new")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  
+  auditLogs          AuditLog[]
+
+  @@index([platform])
+  @@index([decision])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model BrandConfig {
+  id                  String   @id @default(cuid())
+  companyName         String
+  brandTone           String   @default("Professional")
+  automationLevel     String   @default("SEMI_AUTO")
+  
+  // Escalation Thresholds
+  escalationThresholds String? @db.Text
+  
+  // Platform Credentials (encrypted/stored securely)
+  kiyohApiKey         String?  @db.Text
+  kiyohLocationId     String?
+  kiyohTenantId       String   @default("98")
+  
+  // Placeholder for future platforms
+  googleApiKey        String?  @db.Text
+  googlePlaceId       String?
+  facebookApiKey      String?  @db.Text
+  facebookPageId      String?
+  trustpilotApiKey    String?  @db.Text
+  trustpilotBusinessId String?
+  
+  // Gemini API Key
+  geminiApiKey        String?  @db.Text
+  
+  // Slack Integration
+  slackWebhookUrl     String?  @db.Text
+  slackChannelName    String?
+  slackEnabled        Boolean  @default(false)
+  
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model AuditLog {
+  id                String   @id @default(cuid())
+  reviewId          String?
+  review            Review?  @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  
+  actionType        String
+  riskAssessment    String?  @db.Text
+  decision          String?
+  decisionRationale String?  @db.Text
+  confidenceScore   Int?
+  generatedResponse String?  @db.Text
+  
+  humanAction       String?
+  humanUserId       String?
+  overrideReason    String?  @db.Text
+  previousDecision  String?
+  newDecision       String?
+  
+  metadata          String?  @db.Text
+  createdAt         DateTime @default(now())
+
+  @@index([reviewId])
+  @@index([actionType])
+  @@index([createdAt])
+}
+
+model SystemHealth {
+  id                    String   @id @default(cuid())
+  timestamp             DateTime @default(now())
+  
+  totalReviews          Int      @default(0)
+  autoHandledCount      Int      @default(0)
+  holdForApprovalCount  Int      @default(0)
+  escalatedCount        Int      @default(0)
+  
+  escalationRate        Float    @default(0)
+  overrideFrequency     Float    @default(0)
+  avgConfidenceScore    Float    @default(0)
+  
+  alertTriggered        Boolean  @default(false)
+  alertMessage          String?  @db.Text
+  
+  @@index([timestamp])
+}
+
+model ReviewerHistory {
+  id                String   @id @default(cuid())
+  platform          String
+  reviewerIdentifier String
+  
+  totalReviews      Int      @default(0)
+  unresolvedIssues  Int      @default(0)
+  lastInteraction   DateTime?
+  notes             String?  @db.Text
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([platform, reviewerIdentifier])
+}
