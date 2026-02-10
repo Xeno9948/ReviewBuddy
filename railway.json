@@ -1,0 +1,5 @@
+{
+    "build": {
+        "rootDirectory": "review_buddy/nextjs_space"
+    }
+}

@@ -19,6 +19,9 @@ This guide will walk you through deploying your Review Buddy application to Rail
 6. Set it to: `review_buddy/nextjs_space`
 7. This is CRITICAL because your app is not in the root of the repo.
 
+**Verification:**
+After setting the Root Directory, your build logs should NOT show `Uploads (2)` or `.gitignore`. They should show `package.json`, `app`, `components` etc. If you see `Review-buddy` files, the setting hasn't applied.
+
 ### 2. Add a Database
 
 1. In your Railway project view, right-click on the canvas or click "New".
