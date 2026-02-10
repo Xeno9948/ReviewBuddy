@@ -14,10 +14,11 @@ This guide will walk you through deploying your Review Buddy application to Rail
 1. Go to your Railway dashboard.
 2. Click "New Project".
 3. Select "Deploy from GitHub repo" and choose your repository.
-4. **IMPORTANT**: Click on the new service "ReviewBuddy" (or whatever it was named).
-5. Go to **Settings** -> **General** -> **Root Directory**.
-6. Set it to: `review_buddy/nextjs_space`
-7. This is CRITICAL because your app is not in the root of the repo.
+4. **IMPORTANT**: Click on the new service "ReviewBuddy".
+5. Go to **Settings**.
+6. Look under **Source Repo**. You will see: **"Add Root Directory"**.
+7. Click it and enter: `review_buddy/nextjs_space`
+8. This is CRITICAL.
 
 **Verification:**
 After setting the Root Directory, your build logs should NOT show `Uploads (2)` or `.gitignore`. They should show `package.json`, `app`, `components` etc. If you see `Review-buddy` files, the setting hasn't applied.
@@ -48,11 +49,14 @@ Railway makes this easy. Instead of manually copying the connection string:
 
 Since this is a new deployment, you need to push your Prisma schema to the database.
 
-**Option A: Automated (Recommended for simple setups)**
-Add a start command in your service settings:
+**Option A: Automated (Recommended)**
+Update your start command in Railway settings:
 1. Go to "Settings" -> "Deploy" -> "Start Command".
-2. Set it to: `npx prisma migrate deploy && next start`.
-   *Note: This runs migrations on every boot. For production, you might want to run this manually.*
+2. Set it to: `npx prisma db push && node .next/standalone/server.js`
+
+*Why this change?*
+- `prisma db push`: Automatically creates the tables (since you don't have migration files yet).
+- `node ...`: Required because we enabled "Standalone" mode for valid deployments.
 
 **Option B: Manual (via CLI)**
 1. Install Railway CLI: `npm i -g @railway/cli`
