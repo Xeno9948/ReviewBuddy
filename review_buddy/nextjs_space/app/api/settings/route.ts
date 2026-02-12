@@ -11,9 +11,9 @@ export async function GET() {
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    
+
     let brandConfig = await prisma.brandConfig.findFirst({ where: { isActive: true } });
-    
+
     if (!brandConfig) {
       brandConfig = await prisma.brandConfig.create({
         data: {
@@ -24,7 +24,7 @@ export async function GET() {
         },
       });
     }
-    
+
     // Mask sensitive data
     const safeConfig = {
       id: brandConfig?.id,
@@ -45,9 +45,14 @@ export async function GET() {
       slackWebhookUrl: brandConfig?.slackWebhookUrl ? '••••••••' : null,
       slackChannelName: brandConfig?.slackChannelName ?? null,
       slackEnabled: brandConfig?.slackEnabled ?? false,
+      whatsappEnabled: brandConfig?.whatsappEnabled ?? false,
+      whatsappAdminNumber: brandConfig?.whatsappAdminNumber ?? null,
+      twilioAccountSid: brandConfig?.twilioAccountSid ? '••••••••' : null,
+      twilioAuthToken: brandConfig?.twilioAuthToken ? '••••••••' : null,
+      twilioPhoneNumber: brandConfig?.twilioPhoneNumber ?? null,
       isActive: brandConfig?.isActive ?? true,
     };
-    
+
     return NextResponse.json(safeConfig);
   } catch (error) {
     console.error('Error fetching settings:', error);
@@ -61,39 +66,46 @@ export async function PUT(request: NextRequest) {
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    
+
     const body = await request?.json?.()?.catch?.(() => ({})) ?? {};
-    
+
     let brandConfig = await prisma.brandConfig.findFirst({ where: { isActive: true } });
-    
+
     const updateData: Record<string, unknown> = {};
-    
+
     if (body?.companyName !== undefined) updateData.companyName = body.companyName;
     if (body?.brandTone !== undefined) updateData.brandTone = body.brandTone;
     if (body?.automationLevel !== undefined) updateData.automationLevel = body.automationLevel;
     if (body?.escalationThresholds !== undefined) updateData.escalationThresholds = body.escalationThresholds;
-    
+
     // Only update API keys if new value provided (not masked)
     if (body?.kiyohApiKey && body.kiyohApiKey !== '••••••••') updateData.kiyohApiKey = body.kiyohApiKey;
     if (body?.kiyohLocationId !== undefined) updateData.kiyohLocationId = body.kiyohLocationId;
     if (body?.kiyohTenantId !== undefined) updateData.kiyohTenantId = body.kiyohTenantId;
-    
+
     if (body?.googleApiKey && body.googleApiKey !== '••••••••') updateData.googleApiKey = body.googleApiKey;
     if (body?.googlePlaceId !== undefined) updateData.googlePlaceId = body.googlePlaceId;
-    
+
     if (body?.facebookApiKey && body.facebookApiKey !== '••••••••') updateData.facebookApiKey = body.facebookApiKey;
     if (body?.facebookPageId !== undefined) updateData.facebookPageId = body.facebookPageId;
-    
+
     if (body?.trustpilotApiKey && body.trustpilotApiKey !== '••••••••') updateData.trustpilotApiKey = body.trustpilotApiKey;
     if (body?.trustpilotBusinessId !== undefined) updateData.trustpilotBusinessId = body.trustpilotBusinessId;
-    
+
     if (body?.geminiApiKey && body.geminiApiKey !== '••••••••') updateData.geminiApiKey = body.geminiApiKey;
-    
+
     // Slack fields
     if (body?.slackWebhookUrl && body.slackWebhookUrl !== '••••••••') updateData.slackWebhookUrl = body.slackWebhookUrl;
     if (body?.slackChannelName !== undefined) updateData.slackChannelName = body.slackChannelName;
     if (body?.slackEnabled !== undefined) updateData.slackEnabled = body.slackEnabled;
-    
+
+    // WhatsApp fields
+    if (body?.whatsappEnabled !== undefined) updateData.whatsappEnabled = body.whatsappEnabled;
+    if (body?.whatsappAdminNumber !== undefined) updateData.whatsappAdminNumber = body.whatsappAdminNumber;
+    if (body?.twilioAccountSid && body.twilioAccountSid !== '••••••••') updateData.twilioAccountSid = body.twilioAccountSid;
+    if (body?.twilioAuthToken && body.twilioAuthToken !== '••••••••') updateData.twilioAuthToken = body.twilioAuthToken;
+    if (body?.twilioPhoneNumber !== undefined) updateData.twilioPhoneNumber = body.twilioPhoneNumber;
+
     if (brandConfig) {
       brandConfig = await prisma.brandConfig.update({
         where: { id: brandConfig.id },
@@ -110,7 +122,7 @@ export async function PUT(request: NextRequest) {
         },
       });
     }
-    
+
     // Create audit log
     await prisma.auditLog.create({
       data: {
@@ -119,7 +131,7 @@ export async function PUT(request: NextRequest) {
         metadata: JSON.stringify({ updatedFields: Object.keys(updateData ?? {}) }),
       },
     });
-    
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error updating settings:', error);

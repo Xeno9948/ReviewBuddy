@@ -97,6 +97,13 @@ model BrandConfig {
   slackChannelName    String?
   slackEnabled        Boolean  @default(false)
   
+  // WhatsApp/Twilio Integration
+  whatsappEnabled     Boolean  @default(false)
+  whatsappAdminNumber String?  @db.Text
+  twilioAccountSid    String?  @db.Text
+  twilioAuthToken     String?  @db.Text
+  twilioPhoneNumber   String?  @db.Text
+  
   isActive            Boolean  @default(true)
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt

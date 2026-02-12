@@ -47,6 +47,11 @@ interface BrandConfig {
   slackWebhookUrl?: string;
   slackChannelName?: string;
   slackEnabled?: boolean;
+  whatsappEnabled?: boolean;
+  whatsappAdminNumber?: string;
+  twilioAccountSid?: string;
+  twilioAuthToken?: string;
+  twilioPhoneNumber?: string;
 }
 
 export default function SettingsPage() {
@@ -61,7 +66,8 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [testing, setTesting] = useState(false);
   const [testingSlack, setTestingSlack] = useState(false);
-  
+  const [testingWhatsApp, setTestingWhatsApp] = useState(false);
+
   const fetchConfig = useCallback(async () => {
     try {
       const response = await fetch('/api/settings');
@@ -75,11 +81,11 @@ export default function SettingsPage() {
       setLoading(false);
     }
   }, []);
-  
+
   useEffect(() => {
     fetchConfig?.();
   }, [fetchConfig]);
-  
+
   const handleSave = async () => {
     setSaving(true);
     try {
@@ -88,7 +94,7 @@ export default function SettingsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(config),
       });
-      
+
       if (response?.ok) {
         toast?.success?.('Settings saved successfully');
         fetchConfig?.();
@@ -102,7 +108,7 @@ export default function SettingsPage() {
       setSaving(false);
     }
   };
-  
+
   const handleTestConnection = async () => {
     setTesting(true);
     try {
@@ -111,9 +117,9 @@ export default function SettingsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ limit: 1 }),
       });
-      
+
       const data = await response?.json?.() ?? {};
-      
+
       if (response?.ok) {
         toast?.success?.(`Connection successful! Location: ${data?.locationName ?? 'Unknown'}`);
       } else {
@@ -145,7 +151,7 @@ export default function SettingsPage() {
           },
         }),
       });
-      
+
       if (response?.ok) {
         toast?.success?.('Test message sent to Slack!');
       } else {
@@ -159,11 +165,33 @@ export default function SettingsPage() {
       setTestingSlack(false);
     }
   };
-  
+
+  const handleTestWhatsApp = async () => {
+    setTestingWhatsApp(true);
+    try {
+      const response = await fetch('/api/whatsapp/test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (response?.ok) {
+        toast?.success?.('Test WhatsApp message sent!');
+      } else {
+        const data = await response?.json?.() ?? {};
+        toast?.error?.(data?.error ?? 'Failed to send WhatsApp message');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast?.error?.('Failed to test WhatsApp connection');
+    } finally {
+      setTestingWhatsApp(false);
+    }
+  };
+
   const updateConfig = (key: keyof BrandConfig, value: string | boolean) => {
     setConfig(prev => ({ ...(prev ?? {}), [key]: value }));
   };
-  
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -171,7 +199,7 @@ export default function SettingsPage() {
       </div>
     );
   }
-  
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -188,16 +216,17 @@ export default function SettingsPage() {
           Save Settings
         </Button>
       </div>
-      
+
       <Tabs defaultValue="brand" className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="brand">Brand</TabsTrigger>
           <TabsTrigger value="kiyoh">Kiyoh</TabsTrigger>
           <TabsTrigger value="ai">AI</TabsTrigger>
           <TabsTrigger value="slack">Slack</TabsTrigger>
+          <TabsTrigger value="whatsapp">WhatsApp</TabsTrigger>
           <TabsTrigger value="platforms">Platforms</TabsTrigger>
         </TabsList>
-        
+
         {/* Brand Configuration */}
         <TabsContent value="brand" className="mt-4">
           <Card>
@@ -220,7 +249,7 @@ export default function SettingsPage() {
                   placeholder="Your Company Name"
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="brandTone">Brand Tone</Label>
                 <Select
@@ -239,7 +268,7 @@ export default function SettingsPage() {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="automationLevel">Automation Level</Label>
                 <Select
@@ -260,7 +289,7 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         {/* Kiyoh Configuration */}
         <TabsContent value="kiyoh" className="mt-4">
           <Card>
@@ -294,7 +323,7 @@ export default function SettingsPage() {
                   Found in your Kiyoh dashboard under Invite → Extra options
                 </p>
               </div>
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="kiyohLocationId">Location ID</Label>
@@ -321,7 +350,7 @@ export default function SettingsPage() {
                   </Select>
                 </div>
               </div>
-              
+
               <Button
                 variant="outline"
                 onClick={handleTestConnection}
@@ -337,7 +366,7 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         {/* AI Settings */}
         <TabsContent value="ai" className="mt-4">
           <Card>
@@ -360,7 +389,7 @@ export default function SettingsPage() {
                   Using Gemini 2.5 Flash for risk assessment and response generation.
                 </p>
               </div>
-              
+
               <div className="space-y-2">
                 <Label>Active Features</Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -433,7 +462,7 @@ export default function SettingsPage() {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="slackWebhookUrl">Webhook URL</Label>
                 <Input
@@ -447,7 +476,7 @@ export default function SettingsPage() {
                   Create an incoming webhook in your Slack workspace at api.slack.com/apps
                 </p>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="slackChannelName">Channel Name (optional)</Label>
                 <Input
@@ -457,7 +486,7 @@ export default function SettingsPage() {
                   placeholder="#reviews"
                 />
               </div>
-              
+
               <Button
                 variant="outline"
                 onClick={handleTestSlack}
@@ -473,7 +502,116 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
+        <TabsContent value="whatsapp" className="mt-4">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <MessageCircle className="h-5 w-5 text-emerald-600" />
+                    WhatsApp/Twilio Integration
+                  </CardTitle>
+                  <CardDescription>
+                    Get instant notifications via WhatsApp when critical reviews arrive
+                  </CardDescription>
+                </div>
+                <Badge variant={config?.whatsappEnabled ? 'success' : 'secondary'}>
+                  {config?.whatsappEnabled ? 'Enabled' : 'Disabled'}
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <Bell className="h-5 w-5 text-blue-600 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-blue-800">WhatsApp Alerts</p>
+                    <p className="text-sm text-blue-700 mt-1">
+                      Configure your Twilio WhatsApp Business API to receive real-time alerts for reviews that require manual intervention.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="whatsappEnabled">Enable WhatsApp Notifications</Label>
+                  <Select
+                    value={config?.whatsappEnabled ? 'true' : 'false'}
+                    onValueChange={(v) => updateConfig?.('whatsappEnabled', v === 'true')}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="true">Enabled</SelectItem>
+                      <SelectItem value="false">Disabled</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="whatsappAdminNumber">Recipient Number (Your WhatsApp)</Label>
+                  <Input
+                    id="whatsappAdminNumber"
+                    value={config?.whatsappAdminNumber ?? ''}
+                    onChange={(e) => updateConfig?.('whatsappAdminNumber', e.target.value)}
+                    placeholder="whatsapp:+31612345678"
+                  />
+                  <p className="text-xs text-gray-500">Include "whatsapp:" prefix and country code</p>
+                </div>
+              </div>
+
+              <div className="space-y-4 pt-4 border-t">
+                <h4 className="font-medium text-sm">Twilio Credentials</h4>
+                <div className="space-y-2">
+                  <Label htmlFor="twilioAccountSid">Account SID</Label>
+                  <Input
+                    id="twilioAccountSid"
+                    type="password"
+                    value={config?.twilioAccountSid ?? ''}
+                    onChange={(e) => updateConfig?.('twilioAccountSid', e.target.value)}
+                    placeholder="AC..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="twilioAuthToken">Auth Token</Label>
+                  <Input
+                    id="twilioAuthToken"
+                    type="password"
+                    value={config?.twilioAuthToken ?? ''}
+                    onChange={(e) => updateConfig?.('twilioAuthToken', e.target.value)}
+                    placeholder="••••••••"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="twilioPhoneNumber">Twilio WhatsApp Number (Sender)</Label>
+                  <Input
+                    id="twilioPhoneNumber"
+                    value={config?.twilioPhoneNumber ?? ''}
+                    onChange={(e) => updateConfig?.('twilioPhoneNumber', e.target.value)}
+                    placeholder="whatsapp:+14155238886"
+                  />
+                </div>
+              </div>
+
+              <Button
+                variant="outline"
+                onClick={handleTestWhatsApp}
+                disabled={testingWhatsApp || !config?.whatsappEnabled || !config?.twilioAccountSid}
+              >
+                {testingWhatsApp ? (
+                  <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4 mr-2" />
+                )}
+                Send Test WhatsApp
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         {/* Other Platforms */}
         <TabsContent value="platforms" className="mt-4">
           <div className="space-y-4">
@@ -495,7 +633,7 @@ export default function SettingsPage() {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card className="opacity-60">
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -514,7 +652,7 @@ export default function SettingsPage() {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card className="opacity-60">
               <CardHeader>
                 <div className="flex items-center justify-between">
