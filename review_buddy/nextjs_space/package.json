@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "cp -r public .next/standalone/ && mkdir -p .next/standalone/.next && cp -r .next/static .next/standalone/.next/ && npx prisma db push && HOSTNAME=0.0.0.0 node .next/standalone/server.js",
+    "start": "cp -r public .next/standalone/ && mkdir -p .next/standalone/.next && cp -r .next/static .next/standalone/.next/ && cp -r scripts .next/standalone/ && npx prisma db push && node .next/standalone/scripts/seed.js && HOSTNAME=0.0.0.0 node .next/standalone/server.js",
     "lint": "next lint",
     "postinstall": "prisma generate"
   },
