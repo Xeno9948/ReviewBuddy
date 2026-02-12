@@ -52,7 +52,7 @@ Since this is a new deployment, you need to push your Prisma schema to the datab
 **Option A: Automated (Recommended)**
 Update your start command in Railway settings:
 1. Go to "Settings" -> "Deploy" -> "Start Command".
-2. Set it to: `npx prisma db push && node .next/standalone/server.js`
+2. Set it to: `npx prisma db push && HOSTNAME=0.0.0.0 node .next/standalone/review_buddy/nextjs_space/server.js`
 
 *Why this change?*
 - `prisma db push`: Automatically creates the tables (since you don't have migration files yet).
