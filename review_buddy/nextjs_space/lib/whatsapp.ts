@@ -22,6 +22,15 @@ export async function sendWhatsAppNotification(params: {
 
         const client = twilio(config.twilioAccountSid, config.twilioAuthToken);
 
+        // Ensure numbers have 'whatsapp:' prefix
+        const from = config.twilioPhoneNumber.startsWith('whatsapp:')
+            ? config.twilioPhoneNumber
+            : `whatsapp:${config.twilioPhoneNumber}`;
+
+        const to = config.whatsappAdminNumber.startsWith('whatsapp:')
+            ? config.whatsappAdminNumber
+            : `whatsapp:${config.whatsappAdminNumber}`;
+
         const message = `🚨 *New High Risk Review Notification* 🚨\n\n` +
             `*Reviewer:* ${params.reviewerName}\n` +
             `*Rating:* ${params.rating}/10\n` +
@@ -33,8 +42,8 @@ export async function sendWhatsAppNotification(params: {
 
         const result = await client.messages.create({
             body: message,
-            from: config.twilioPhoneNumber,
-            to: config.whatsappAdminNumber,
+            from: from,
+            to: to,
         });
 
         console.log('WhatsApp notification sent:', result.sid);
