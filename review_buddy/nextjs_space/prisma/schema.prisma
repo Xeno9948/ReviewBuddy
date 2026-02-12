@@ -56,6 +56,8 @@ model Review {
   humanNotes         String?  @db.Text
   
   status             String   @default("new")
+  sentiment          String?  // Positive, Neutral, Negative
+  topics             Json?    // Array of topic strings
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
   

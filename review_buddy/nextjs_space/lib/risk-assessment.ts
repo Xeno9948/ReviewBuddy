@@ -74,11 +74,11 @@ export function determineDecision(
   automationLevel: string
 ): DecisionResult {
   const { contentRisk, reputationalRisk, contextualRisk, piiDetected, legalRiskDetected } = assessment ?? {};
-  
+
   let decision: Decision = 'HOLD_FOR_APPROVAL';
   let confidenceScore = 80;
   let rationale = '';
-  
+
   // Rule 1: Any High risk or legal risk = ESCALATE_TO_HUMAN
   if (
     contentRisk === 'High' ||
@@ -96,7 +96,7 @@ export function determineDecision(
     rationale = `Escalation required due to: ${reasons.join(', ')}`;
     return { decision, confidenceScore, rationale };
   }
-  
+
   // Rule 2: PII detected = HOLD_FOR_APPROVAL
   if (piiDetected) {
     decision = 'HOLD_FOR_APPROVAL';
@@ -104,7 +104,7 @@ export function determineDecision(
     rationale = 'PII detected - human review required before responding';
     return { decision, confidenceScore, rationale };
   }
-  
+
   // Rule 3: All Low risks AND automation = AUTO = AUTO_HANDLE
   if (
     contentRisk === 'Low' &&
@@ -117,7 +117,7 @@ export function determineDecision(
     rationale = 'All risk levels are low and automation is enabled';
     return { decision, confidenceScore, rationale };
   }
-  
+
   // Rule 4: Medium risks with AUTO = HOLD_FOR_APPROVAL
   if (
     (contentRisk === 'Medium' || reputationalRisk === 'Medium' || contextualRisk === 'Medium')
@@ -131,7 +131,7 @@ export function determineDecision(
     rationale = `Medium risk detected in: ${mediumRisks.join(', ')} - human approval recommended`;
     return { decision, confidenceScore, rationale };
   }
-  
+
   // Rule 5: MANUAL mode = always HOLD_FOR_APPROVAL
   if (automationLevel === 'MANUAL') {
     decision = 'HOLD_FOR_APPROVAL';
@@ -139,15 +139,27 @@ export function determineDecision(
     rationale = 'Manual mode enabled - all reviews require human approval';
     return { decision, confidenceScore, rationale };
   }
-  
-  // Rule 6: SEMI_AUTO mode with low risks = HOLD_FOR_APPROVAL but suggest approval
+
+  // Rule 6: SEMI_AUTO mode - allow auto-handling for perfect low-risk reviews
   if (automationLevel === 'SEMI_AUTO') {
+    if (
+      contentRisk === 'Low' &&
+      reputationalRisk === 'Low' &&
+      contextualRisk === 'Low' &&
+      assessment.sentiment === 'Positive'
+    ) {
+      decision = 'AUTO_HANDLE';
+      confidenceScore = 90;
+      rationale = 'Semi-automatic mode - perfect positive review handled automatically';
+      return { decision, confidenceScore, rationale };
+    }
+
     decision = 'HOLD_FOR_APPROVAL';
     confidenceScore = 85;
-    rationale = 'Semi-automatic mode - low risk review queued for quick approval';
+    rationale = 'Semi-automatic mode - review queued for quick check';
     return { decision, confidenceScore, rationale };
   }
-  
+
   return { decision, confidenceScore, rationale };
 }
 

@@ -16,6 +16,8 @@ export interface RiskAssessment {
   contextualRisk: RiskLevel;
   piiDetected: boolean;
   legalRiskDetected: boolean;
+  sentiment: 'Positive' | 'Neutral' | 'Negative';
+  topics: string[];
   details: {
     contentRiskFactors: string[];
     reputationalRiskFactors: string[];
@@ -49,6 +51,8 @@ export interface ReviewData {
   decision: Decision;
   confidenceScore: number;
   decisionRationale?: string;
+  sentiment?: string;
+  topics?: any;
   generatedResponse?: string;
   responseStatus: string;
   humanAssignedId?: string;

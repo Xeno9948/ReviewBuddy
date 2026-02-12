@@ -11,7 +11,7 @@ export async function GET() {
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    
+
     // Get review counts by decision
     const [totalReviews, autoHandled, holdForApproval, escalated, responded] = await Promise.all([
       prisma.review.count(),
@@ -20,47 +20,80 @@ export async function GET() {
       prisma.review.count({ where: { decision: 'ESCALATE_TO_HUMAN' } }),
       prisma.review.count({ where: { status: 'responded' } }),
     ]);
-    
+
     // Get reviews by status
     const [newReviews, pendingApproval, escalatedReviews] = await Promise.all([
       prisma.review.count({ where: { status: 'new' } }),
       prisma.review.count({ where: { status: 'pending_approval' } }),
       prisma.review.count({ where: { status: 'escalated' } }),
     ]);
-    
+
     // Get average confidence score
     const avgConfidence = await prisma.review.aggregate({
       _avg: { confidenceScore: true },
       where: { confidenceScore: { gt: 0 } },
     });
-    
+
     // Get average rating
     const avgRating = await prisma.review.aggregate({
       _avg: { rating: true },
     });
-    
+
     // Get latest system health
     const systemHealth = await prisma.systemHealth.findFirst({
       orderBy: { timestamp: 'desc' },
     });
-    
+
     // Get recent reviews for chart
     const last7Days = new Date();
     last7Days.setDate(last7Days.getDate() - 7);
-    
+
     const recentReviews = await prisma.review.groupBy({
       by: ['decision'],
       _count: { id: true },
       where: { createdAt: { gte: last7Days } },
     });
-    
+
     // Get rating distribution
     const ratingDistribution = await prisma.review.groupBy({
       by: ['rating'],
       _count: { id: true },
       orderBy: { rating: 'asc' },
     });
-    
+
+    // Get sentiment distribution
+    const sentimentDistribution = await prisma.review.groupBy({
+      by: ['sentiment' as any],
+      _count: { id: true },
+    });
+
+    // Get topics (tags)
+    const recentWithTopics = await prisma.review.findMany({
+      where: { topics: { not: null } as any },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+      select: { topics: true } as any,
+    });
+
+    const topicCounts: Record<string, number> = {};
+    (recentWithTopics as any[]).forEach((r) => {
+      try {
+        const tags = typeof r.topics === 'string' ? JSON.parse(r.topics) : r.topics;
+        if (Array.isArray(tags)) {
+          tags.forEach((tag) => {
+            topicCounts[tag] = (topicCounts[tag] ?? 0) + 1;
+          });
+        }
+      } catch (e) {
+        // Ignore parsing errors
+      }
+    });
+
+    const topTopics = Object.entries(topicCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 12)
+      .map(([name, count]) => ({ name, count }));
+
     return NextResponse.json({
       overview: {
         totalReviews: totalReviews ?? 0,
@@ -92,6 +125,11 @@ export async function GET() {
           rating: r?.rating ?? 0,
           count: r?._count?.id ?? 0,
         })),
+        sentimentDistribution: (sentimentDistribution as any[]).map(s => ({
+          name: s.sentiment ?? 'Neutral',
+          value: s._count?.id ?? 0
+        })),
+        topTopics,
       },
     });
   } catch (error) {

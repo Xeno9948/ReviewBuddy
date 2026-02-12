@@ -89,6 +89,8 @@ export async function POST(
             console.error("Failed to parse Gemini risk assessment:", riskContent);
             // Fallback/Default
             riskAssessment = {
+              sentiment: (review?.rating ?? 0) >= 8 ? 'Positive' : (review?.rating ?? 0) >= 5 ? 'Neutral' : 'Negative',
+              topics: [],
               contentRisk: 'Medium',
               reputationalRisk: 'Medium',
               contextualRisk: 'Low',
@@ -175,6 +177,8 @@ export async function POST(
               decision: decisionResult?.decision ?? 'HOLD_FOR_APPROVAL',
               confidenceScore: decisionResult?.confidenceScore ?? 0,
               decisionRationale: decisionResult?.rationale ?? '',
+              sentiment: riskAssessment?.sentiment ?? null,
+              topics: riskAssessment?.topics ? JSON.stringify(riskAssessment.topics) : null,
               generatedResponse: generatedResponse || null,
               responseStatus: decisionResult?.decision === 'AUTO_HANDLE' ? 'generated' : 'pending',
               status: statusMap[decisionResult?.decision ?? 'HOLD_FOR_APPROVAL'] ?? 'pending_approval',
