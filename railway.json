@@ -3,6 +3,6 @@
         "rootDirectory": "review_buddy/nextjs_space"
     },
     "deploy": {
-        "startCommand": "npx prisma db push && HOSTNAME=0.0.0.0 node .next/standalone/review_buddy/nextjs_space/server.js"
+        "startCommand": "npx prisma db push && HOSTNAME=0.0.0.0 node .next/standalone/nextjs_space/server.js"
     }
 }
