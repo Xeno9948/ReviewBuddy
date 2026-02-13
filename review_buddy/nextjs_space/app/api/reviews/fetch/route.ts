@@ -12,21 +12,21 @@ export async function POST(request: NextRequest) {
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    
+
     const brandConfig = await prisma.brandConfig.findFirst({
       where: { isActive: true },
     });
-    
+
     if (!brandConfig?.kiyohApiKey || !brandConfig?.kiyohLocationId) {
       return NextResponse.json(
         { error: 'Kiyoh API credentials not configured' },
         { status: 400 }
       );
     }
-    
+
     const body = await request?.json?.()?.catch?.(() => ({})) ?? {};
     const { dateSince, limit = 50 } = body ?? {};
-    
+
     const kiyohData = await fetchKiyohReviews(
       {
         apiKey: brandConfig.kiyohApiKey,
@@ -40,19 +40,20 @@ export async function POST(request: NextRequest) {
         sortOrder: 'DESC',
       }
     );
-    
+
     const reviews = kiyohData?.reviews ?? [];
     const importedCount = { new: 0, updated: 0 };
-    
+    const newReviewIds: string[] = [];
+
     for (const review of reviews) {
       const reviewId = review?.reviewId;
       if (!reviewId) continue;
-      
+
       // Extract review text from reviewContent
       let reviewText = '';
       let oneLiner = '';
       const reviewContent = review?.reviewContent ?? [];
-      
+
       for (const content of reviewContent) {
         if (content?.questionGroup === 'DEFAULT_OPINION') {
           reviewText = String(content?.rating ?? '');
@@ -61,11 +62,11 @@ export async function POST(request: NextRequest) {
           oneLiner = String(content?.rating ?? '');
         }
       }
-      
+
       const existingReview = await prisma.review.findUnique({
         where: { externalId: reviewId },
       });
-      
+
       if (existingReview) {
         await prisma.review.update({
           where: { id: existingReview.id },
@@ -78,7 +79,7 @@ export async function POST(request: NextRequest) {
         });
         importedCount.updated++;
       } else {
-        await prisma.review.create({
+        const newReview = await prisma.review.create({
           data: {
             externalId: reviewId,
             platform: 'kiyoh',
@@ -92,9 +93,10 @@ export async function POST(request: NextRequest) {
           },
         });
         importedCount.new++;
+        newReviewIds.push(newReview.id);
       }
     }
-    
+
     // Create audit log
     await prisma.auditLog.create({
       data: {
@@ -107,11 +109,12 @@ export async function POST(request: NextRequest) {
         }),
       },
     });
-    
+
     return NextResponse.json({
       success: true,
       fetched: reviews?.length ?? 0,
       imported: importedCount,
+      newReviewIds: newReviewIds,
       locationName: kiyohData?.locationName ?? '',
       averageRating: kiyohData?.averageRating ?? 0,
       totalReviews: kiyohData?.numberReviews ?? 0,

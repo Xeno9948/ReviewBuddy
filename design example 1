@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Review Management Dashboard | Premium Edition</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style type="text/tailwindcss">
+        :root {
+            --apple-bg: #f5f5f7;
+            --apple-sidebar: rgba(255, 255, 255, 0.7);
+            --gradient-start: #064e3b;--gradient-end: #1e3a8a;--squircle-radius: 24px;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--apple-bg);
+            color: #1d1d1f;
+        }
+        .glass {
+            background: var(--apple-sidebar);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .squircle {
+            border-radius: var(--squircle-radius);
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+        }
+        .active-nav {
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: white !important;
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex">
+    <aside class="w-72 glass border-r border-white/50 flex flex-col fixed h-full z-50">
+        <div class="p-8 pt-10">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 squircle btn-gradient flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white">analytics</span>
+                </div>
+                <span class="text-xl font-semibold tracking-tight text-slate-800">RevuFlow</span>
+            </div>
+        </div>
+        <nav class="flex-1 px-6 py-4 space-y-1">
+            <a class="flex items-center gap-3 px-4 py-3 squircle active-nav shadow-lg shadow-blue-900/10" href="#">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-light tracking-wide">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 squircle text-slate-500 hover:bg-white/50 transition-all"
+                href="#">
+                <span class="material-symbols-outlined">rate_review</span>
+                <span class="font-light">All Reviews</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 squircle text-slate-500 hover:bg-white/50 transition-all"
+                href="#">
+                <span class="material-symbols-outlined">bar_chart</span>
+                <span class="font-light">Analytics</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 squircle text-slate-500 hover:bg-white/50 transition-all"
+                href="#">
+                <span class="material-symbols-outlined">description</span>
+                <span class="font-light">Templates</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 squircle text-slate-500 hover:bg-white/50 transition-all"
+                href="#">
+                <span class="material-symbols-outlined">hub</span>
+                <span class="font-light">Integrations</span>
+            </a>
+        </nav>
+        <div class="p-6 border-t border-black/5">
+            <div class="flex items-center gap-4 bg-white/40 p-3 squircle">
+                <img alt="User" class="w-10 h-10 rounded-full object-cover border-2 border-white"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuT5MqVq9zPLyTlKX0CZrkkOV2u3FQ7ZdhC9TfGo6KT7NxC7lDQIexFgwzaALUf3kQwyNsku8t5VFWQolih-jnf0Tk8ucPZlDqRudEiu0ocgkex82gzesExukXhEAHPI3lgA6Q9Jdw18Eo3OsPi4dj0rv1OkvfEz1jRpxA9G03kMt62gSMzkq5RQxgdlE3uJPSDV-lBiljVO6BQP0T5k1Bx7pNr8GSubHIxb9YFXko3HngDTN3C4Wyk3h6894U_LjUEXmYV3frieU" />
+                <div class="overflow-hidden">
+                    <p class="text-xs font-semibold text-slate-800 truncate">Marcus Sterling</p>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-medium">Administrator</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <main class="flex-1 ml-72 p-12">
+        <header class="flex justify-between items-start mb-12">
+            <div>
+                <h1 class="text-4xl font-light tracking-tight text-slate-900">Overview</h1>
+                <p class="text-slate-500 mt-2 font-light">Monday, 24 June 2024</p>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="relative">
+                    <span
+                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                    <input
+                        class="pl-12 pr-6 py-3 bg-white border-none squircle focus:ring-2 focus:ring-slate-200 w-72 text-sm text-slate-800 placeholder:text-slate-400 card-shadow"
+                        placeholder="Search insights..." type="text" />
+                </div>
+                <button
+                    class="bg-white p-3 squircle text-slate-600 card-shadow hover:scale-105 transition-transform relative">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="absolute top-3 right-3 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+                </button>
+            </div>
+        </header>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div class="bg-white p-8 squircle card-shadow border border-white">
+                <div class="flex justify-between items-start mb-6">
+                    <p class="text-slate-400 text-xs font-semibold uppercase tracking-widest">Average Rating</p>
+                    <span class="text-green-600 text-xs font-medium px-2 py-1 bg-green-50 rounded-full">+2.4%</span>
+                </div>
+                <div class="flex items-baseline gap-4">
+                    <h2 class="text-5xl font-light text-slate-900">4.8</h2>
+                    <div class="flex text-amber-400 gap-0.5">
+                        <span class="material-icons text-lg">star</span>
+                        <span class="material-icons text-lg">star</span>
+                        <span class="material-icons text-lg">star</span>
+                        <span class="material-icons text-lg">star</span>
+                        <span class="material-icons text-lg">star_half</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-8 squircle card-shadow border border-white">
+                <div class="flex justify-between items-start mb-6">
+                    <p class="text-slate-400 text-xs font-semibold uppercase tracking-widest">Total Reviews</p>
+                    <span
+                        class="text-slate-400 text-[10px] font-semibold border border-slate-100 px-2 py-1 rounded-full">JUNE
+                        2024</span>
+                </div>
+                <div class="flex items-baseline gap-2">
+                    <h2 class="text-5xl font-light text-slate-900">1,284</h2>
+                </div>
+                <div class="mt-6">
+                    <div class="w-full bg-slate-50 h-1.5 rounded-full overflow-hidden">
+                        <div class="btn-gradient h-full w-[82%]"></div>
+                    </div>
+                    <div class="flex justify-between mt-2">
+                        <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-tighter">Goal:
+                            1,500</span>
+                        <span class="text-[10px] font-bold text-slate-600">82%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-8 squircle card-shadow border border-white">
+                <div class="flex justify-between items-start mb-6">
+                    <p class="text-slate-400 text-xs font-semibold uppercase tracking-widest">Sentiment</p>
+                    <span class="material-symbols-outlined text-green-500">trending_up</span>
+                </div>
+                <h2 class="text-5xl font-light text-slate-900">85%</h2>
+                <div class="flex gap-1.5 mt-6">
+                    <div class="h-1 flex-1 bg-green-500 rounded-full"></div>
+                    <div class="h-1 flex-1 bg-green-500 rounded-full"></div>
+                    <div class="h-1 flex-1 bg-green-400 rounded-full"></div>
+                    <div class="h-1 flex-1 bg-slate-100 rounded-full"></div>
+                    <div class="h-1 flex-1 bg-slate-100 rounded-full"></div>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            <div class="lg:col-span-2 bg-white p-8 squircle card-shadow border border-white">
+                <div class="flex justify-between items-center mb-10">
+                    <h3 class="text-lg font-medium text-slate-800">Review Velocity</h3>
+                    <div class="flex bg-slate-50 p-1 squircle">
+                        <button class="text-xs font-medium px-4 py-1.5 squircle bg-white shadow-sm text-slate-900">7
+                            Days</button>
+                        <button
+                            class="text-xs font-medium px-4 py-1.5 text-slate-400 hover:text-slate-600 transition-colors">30
+                            Days</button>
+                    </div>
+                </div>
+                <div class="h-56 flex items-end justify-between gap-3 px-2">
+                    <div class="w-full bg-slate-50 hover:bg-slate-100 transition-colors h-[40%] squircle"></div>
+                    <div class="w-full bg-slate-50 hover:bg-slate-100 transition-colors h-[55%] squircle"></div>
+                    <div class="w-full bg-slate-50 hover:bg-slate-100 transition-colors h-[45%] squircle"></div>
+                    <div class="w-full btn-gradient h-[70%] squircle opacity-80"></div>
+                    <div class="w-full btn-gradient h-[85%] squircle"></div>
+                    <div class="w-full bg-slate-50 hover:bg-slate-100 transition-colors h-[60%] squircle"></div>
+                    <div class="w-full bg-slate-50 hover:bg-slate-100 transition-colors h-[90%] squircle"></div>
+                </div>
+                <div class="flex justify-between mt-6 px-1">
+                    <span class="text-[10px] text-slate-400 font-semibold">MON</span>
+                    <span class="text-[10px] text-slate-400 font-semibold">TUE</span>
+                    <span class="text-[10px] text-slate-400 font-semibold">WED</span>
+                    <span class="text-[10px] text-slate-400 font-semibold">THU</span>
+                    <span class="text-[10px] text-slate-400 font-semibold">FRI</span>
+                    <span class="text-[10px] text-slate-400 font-semibold">SAT</span>
+                    <span class="text-[10px] text-slate-400 font-semibold">SUN</span>
+                </div>
+            </div>
+            <div class="bg-white p-8 squircle card-shadow border border-white">
+                <h3 class="text-lg font-medium text-slate-800 mb-8">Ratings Breakdown</h3>
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <span class="text-xs font-semibold text-slate-400 w-4">5</span>
+                        <div class="flex-1 bg-slate-50 h-2 rounded-full overflow-hidden">
+                            <div class="btn-gradient h-full w-[75%]"></div>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-800 w-8">75%</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-xs font-semibold text-slate-400 w-4">4</span>
+                        <div class="flex-1 bg-slate-50 h-2 rounded-full overflow-hidden">
+                            <div class="btn-gradient h-full w-[15%] opacity-60"></div>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-800 w-8">15%</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-xs font-semibold text-slate-400 w-4">3</span>
+                        <div class="flex-1 bg-slate-50 h-2 rounded-full overflow-hidden">
+                            <div class="bg-slate-200 h-full w-[5%]"></div>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-800 w-8">5%</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-xs font-semibold text-slate-400 w-4">2</span>
+                        <div class="flex-1 bg-slate-50 h-2 rounded-full overflow-hidden">
+                            <div class="bg-slate-200 h-full w-[3%]"></div>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-800 w-8">3%</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-xs font-semibold text-slate-400 w-4">1</span>
+                        <div class="flex-1 bg-slate-50 h-2 rounded-full overflow-hidden">
+                            <div class="bg-slate-200 h-full w-[2%]"></div>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-800 w-8">2%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section>
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-2xl font-light text-slate-800 tracking-tight">Recent Activity</h3>
+                <div class="flex gap-4">
+                    <select class="bg-white border-none squircle text-sm px-6 py-2.5 card-shadow focus:ring-slate-200">
+                        <option>All Ratings</option>
+                        <option>5 Stars</option>
+                        <option>4 Stars</option>
+                    </select>
+                    <button
+                        class="flex items-center gap-2 bg-white px-6 py-2.5 squircle text-sm font-medium text-slate-600 card-shadow hover:bg-slate-50 transition-colors">
+                        <span class="material-symbols-outlined text-lg">filter_list</span>
+                        Filter
+                    </button>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <div
+                    class="bg-white p-8 squircle card-shadow border border-white hover:border-slate-200 transition-all group">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="flex items-center gap-4">
+                            <img alt="Customer" class="w-14 h-14 rounded-full object-cover ring-4 ring-slate-50"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdoNVweZFBW7F1j0FY9UUBh3AmchHrI2J-PvjVtTOLBwbb3BWlMA6jfZpIMWv3cronODKw3ZYgMuwyLCbbPu8AJNpEetXENuHsfJuHkT--fUj0wZR7rAuSmaAFoiINp-JApgVncMtD6EQstbSeE5FtQlFbxeUtT8ogVBV7ZHbwK6gpD6asisBhZr_QgH082s6VGQ98T1E3l4RLGcZU6_6VEAeLsYzMalFDlXdtDclGF-zuLWYIRJAXEd1cGNy1FrfUTRk_CZ-3hFs" />
+                            <div>
+                                <h4 class="font-semibold text-slate-900">Sarah Jenkins</h4>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <div class="flex text-amber-400 scale-90 -ml-1">
+                                        <span class="material-icons text-base">star</span>
+                                        <span class="material-icons text-base">star</span>
+                                        <span class="material-icons text-base">star</span>
+                                        <span class="material-icons text-base">star</span>
+                                        <span class="material-icons text-base">star</span>
+                                    </div>
+                                    <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">2
+                                        hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-green-50 px-3 py-1 squircle">
+                            <span
+                                class="text-[10px] uppercase font-bold text-green-600 tracking-widest">Exceptional</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 font-light text-base leading-relaxed mb-8 max-w-3xl">
+                        "Absolutely loved the service! The team was incredibly helpful throughout the entire onboarding
+                        process. Everything was handled with professional care and the results exceeded my
+                        expectations."
+                    </p>
+                    <div class="flex justify-between items-center pt-6 border-t border-slate-50">
+                        <div class="flex gap-6">
+                            <button
+                                class="flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors text-sm font-medium">
+                                <span class="material-symbols-outlined text-lg">thumb_up</span>
+                                <span>12</span>
+                            </button>
+                            <button
+                                class="flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors text-sm font-medium">
+                                <span class="material-symbols-outlined text-lg">share</span>
+                                <span>Share</span>
+                            </button>
+                        </div>
+                        <button
+                            class="btn-gradient text-white px-8 py-2.5 squircle text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity shadow-lg shadow-blue-900/10">
+                            <span class="material-symbols-outlined text-lg">reply</span>
+                            Reply
+                        </button>
+                    </div>
+                </div>
+                <div
+                    class="bg-white p-8 squircle card-shadow border border-white hover:border-slate-200 transition-all group">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="flex items-center gap-4">
+                            <img alt="Customer" class="w-14 h-14 rounded-full object-cover ring-4 ring-slate-50"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTLclTxigxbiARwQwLAVT5yryUKTaiVOob2K5E7-ru5MTU8fs2ivuzyZ6iDp4unAFY9Dn4GbPsg8aJGAfcLiCp47v5TJyfWFt5aZp9jI11nxargsteOAYoJFFGDOIAlGkMjKWLriiOFuiyscquaiOc_66CPnklnKoNKAScHtaiV3q_qE63IN5fvLwu3-fyHEnqYsQ9rv0mlKLhn0UbZMYk1H2VS6OoF2OgpNHvsiRDaLCb0D8tooO4XwKKUGIaAF4ZdjjU0Ramcpc" />
+                            <div>
+                                <h4 class="font-semibold text-slate-900">Michael Reed</h4>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <div class="flex text-amber-400 scale-90 -ml-1">
+                                        <span class="material-icons text-base">star</span>
+                                        <span class="material-icons text-base">star</span>
+                                        <span class="material-icons text-base">star</span>
+                                        <span class="material-icons text-base text-slate-200">star</span>
+                                        <span class="material-icons text-base text-slate-200">star</span>
+                                    </div>
+                                    <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">5
+                                        hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 px-3 py-1 squircle">
+                            <span class="text-[10px] uppercase font-bold text-slate-500 tracking-widest">Moderate</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 font-light text-base leading-relaxed mb-8 max-w-3xl">
+                        "Decent experience overall. The product works as advertised, but the interface takes some time
+                        to get used to. I wish there were more tutorial videos available."
+                    </p>
+                    <div class="flex justify-between items-center pt-6 border-t border-slate-50">
+                        <div class="flex gap-6">
+                            <button
+                                class="flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors text-sm font-medium">
+                                <span class="material-symbols-outlined text-lg">thumb_up</span>
+                                <span>2</span>
+                            </button>
+                            <button
+                                class="flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors text-sm font-medium">
+                                <span class="material-symbols-outlined text-lg">share</span>
+                                <span>Share</span>
+                            </button>
+                        </div>
+                        <button
+                            class="btn-gradient text-white px-8 py-2.5 squircle text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity shadow-lg shadow-blue-900/10">
+                            <span class="material-symbols-outlined text-lg">reply</span>
+                            Reply
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 flex justify-center">
+                <button
+                    class="text-slate-400 font-medium hover:text-slate-900 transition-colors flex flex-col items-center gap-1 group">
+                    <span class="text-xs uppercase tracking-widest font-bold">View More</span>
+                    <span
+                        class="material-symbols-outlined transition-transform group-hover:translate-y-1">keyboard_arrow_down</span>
+                </button>
+            </div>
+        </section>
+    </main>
+
+</body>
+
+</html>

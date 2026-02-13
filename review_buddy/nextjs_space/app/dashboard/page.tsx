@@ -93,6 +93,30 @@ export default function DashboardPage() {
 
       if (response?.ok) {
         toast?.success?.(`Fetched ${data?.fetched ?? 0} reviews (${data?.imported?.new ?? 0} new, ${data?.imported?.updated ?? 0} updated)`);
+
+        // Auto-process new reviews (limit to 10 to avoid long waits)
+        if (data?.newReviewIds?.length > 0) {
+          const idsToProcess = data.newReviewIds.slice(0, 10);
+          toast?.info?.(`Analyzing ${idsToProcess.length} new reviews with AI...`);
+
+          let processedCount = 0;
+          for (const id of idsToProcess) {
+            try {
+              await fetch(`/api/reviews/${id}/process`, { method: 'POST' });
+              processedCount++;
+            } catch (error) {
+              console.error(`Failed to process review ${id}`, error);
+            }
+          }
+
+          if (processedCount > 0) {
+            toast?.success?.(`Analyzed ${processedCount} reviews successfully`);
+            if (data.newReviewIds.length > 10) {
+              toast?.info?.(`Check "New Reviews" for the remaining ${data.newReviewIds.length - 10} reviews`);
+            }
+          }
+        }
+
         fetchStats?.();
       } else {
         toast?.error?.(data?.error ?? 'Failed to fetch reviews');

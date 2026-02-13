@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Analytics &amp; Insights Report</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "brand-deep": "#064e3b",
+                        "brand-blue": "#1e3a8a",
+                        "apple-gray": "#f5f5f7",
+                        "apple-border": "#d2d2d7",
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "system-ui", "-apple-system", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-[#fbfbfd] text-[#1d1d1f] antialiased;
+            }
+        }
+        .apple-card {
+            @apply bg-white border border-[#e5e5e7] rounded-3xl p-8 transition-all duration-300;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01), 0 2px 4px -1px rgba(0, 0, 0, 0.006);
+        }
+        .apple-sidebar-link {
+            @apply flex items-center gap-3 px-4 py-2 rounded-lg text-[#86868b] hover:text-[#1d1d1f] hover:bg-[#f5f5f7] transition-all font-light text-sm tracking-tight;
+        }
+        .apple-sidebar-link.active {
+            @apply bg-[#f5f5f7] text-[#1d1d1f] font-normal;
+        }
+        .gradient-accent {
+            background: linear-gradient(135deg, #064e3b 0%, #1e3a8a 100%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body class="font-sans">
+    <div class="flex min-h-screen">
+        <aside class="w-64 border-r border-[#d2d2d7] bg-white flex flex-col fixed h-full z-10">
+            <div class="p-8 flex items-center gap-2">
+                <div class="w-7 h-7 gradient-accent rounded-md flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-[18px]">analytics</span>
+                </div>
+                <span class="font-semibold text-lg tracking-tight">ReviewPulse</span>
+            </div>
+            <nav class="flex-1 px-4 space-y-1">
+                <p class="px-4 text-[11px] font-semibold text-[#86868b] uppercase tracking-wider mb-2">Main</p>
+                <a class="apple-sidebar-link active" href="#">
+                    <span class="material-symbols-outlined text-[20px]">grid_view</span>
+                    <span>Overview</span>
+                </a>
+                <a class="apple-sidebar-link" href="#">
+                    <span class="material-symbols-outlined text-[20px]">location_on</span>
+                    <span>Locations</span>
+                </a>
+                <a class="apple-sidebar-link" href="#">
+                    <span class="material-symbols-outlined text-[20px]">sentiment_satisfied</span>
+                    <span>Sentiment</span>
+                </a>
+                <a class="apple-sidebar-link" href="#">
+                    <span class="material-symbols-outlined text-[20px]">monitoring</span>
+                    <span>Reports</span>
+                </a>
+                <a class="apple-sidebar-link" href="#">
+                    <span class="material-symbols-outlined text-[20px]">settings</span>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="p-6 mt-auto">
+                <div class="flex items-center gap-3 px-2">
+                    <img alt="Profile" class="w-9 h-9 rounded-full object-cover border border-[#e5e5e7]"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDItHw7NayHrEYISFog2_hAeo195YfIYfLXQWj3KPgGpg8Hz9ZTjZunuOgldSdJlCn3a5e17QmJWdNzqTOCSDx1uJafohq09WHIf6TFjfWakRhAadbpBQ1o57Y-izte1SGL_y8jIzSDjGTleaffhYr5ZKILaJjulskMmAcWaszA5ONAiqrjozxQGrCccaAdNl3duz2aLM2sJ-F0zyA5TY5GAkdfP-bd4qo8TuQ1eFguc-TPBLVu5j9YRjkMBc6M0lVyM8IWaGWPcVU" />
+                    <div class="overflow-hidden">
+                        <p class="text-xs font-semibold truncate">Alex Sterling</p>
+                        <p class="text-[10px] text-[#86868b] uppercase tracking-tighter">Business Admin</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <main class="flex-1 ml-64 p-12 bg-[#fbfbfd]">
+            <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                <div>
+                    <h1 class="text-4xl font-semibold tracking-tight text-[#1d1d1f]">Analytics &amp; Insights</h1>
+                    <p class="text-[#86868b] text-lg font-light mt-1">Review performance for Q4 reporting period.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex items-center bg-white border border-[#d2d2d7] rounded-full px-5 py-2.5 text-sm font-light">
+                        <span class="material-symbols-outlined mr-2 text-[18px]">calendar_today</span>
+                        Oct 1 - Oct 31, 2023
+                    </div>
+                    <button
+                        class="gradient-accent text-white px-6 py-2.5 rounded-full font-medium text-sm hover:opacity-90 transition-opacity">
+                        Export Report
+                    </button>
+                </div>
+            </header>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div class="apple-card">
+                    <div class="flex justify-between items-start mb-6">
+                        <p class="text-[#86868b] text-xs font-semibold uppercase tracking-wider">Total Reviews</p>
+                        <span
+                            class="text-[#10b981] text-xs font-medium bg-[#10b981]/10 px-2 py-0.5 rounded-full">+12%</span>
+                    </div>
+                    <h3 class="text-4xl font-semibold tracking-tight">2,842</h3>
+                </div>
+                <div class="apple-card">
+                    <div class="flex justify-between items-start mb-6">
+                        <p class="text-[#86868b] text-xs font-semibold uppercase tracking-wider">Avg. Rating</p>
+                        <span
+                            class="text-[#10b981] text-xs font-medium bg-[#10b981]/10 px-2 py-0.5 rounded-full">+0.2</span>
+                    </div>
+                    <h3 class="text-4xl font-semibold tracking-tight">4.82</h3>
+                </div>
+                <div class="apple-card">
+                    <div class="flex justify-between items-start mb-6">
+                        <p class="text-[#86868b] text-xs font-semibold uppercase tracking-wider">Sentiment</p>
+                        <span
+                            class="text-[#86868b] text-xs font-medium bg-[#f5f5f7] px-2 py-0.5 rounded-full">Stable</span>
+                    </div>
+                    <h3 class="text-4xl font-semibold tracking-tight">92%</h3>
+                </div>
+                <div class="apple-card">
+                    <div class="flex justify-between items-start mb-6">
+                        <p class="text-[#86868b] text-xs font-semibold uppercase tracking-wider">Critical</p>
+                        <span
+                            class="text-[#ef4444] text-xs font-medium bg-[#ef4444]/10 px-2 py-0.5 rounded-full">-5%</span>
+                    </div>
+                    <h3 class="text-4xl font-semibold tracking-tight">12</h3>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+                <div class="lg:col-span-2 apple-card">
+                    <div class="flex items-center justify-between mb-10">
+                        <div>
+                            <h3 class="font-semibold text-xl">Review Trends</h3>
+                            <p class="text-sm text-[#86868b] font-light">Daily review volume distribution</p>
+                        </div>
+                    </div>
+                    <div class="relative h-72 w-full">
+                        <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 300">
+                            <defs>
+                                <linearGradient id="appleGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#064e3b" stop-opacity="0.3"></stop>
+                                    <stop offset="100%" stop-color="#1e3a8a" stop-opacity="0.05"></stop>
+                                </linearGradient>
+                                <linearGradient id="strokeGradient" x1="0%" x2="100%" y1="0%" y2="0%">
+                                    <stop offset="0%" stop-color="#064e3b"></stop>
+                                    <stop offset="100%" stop-color="#1e3a8a"></stop>
+                                </linearGradient>
+                            </defs>
+                            <path d="M0,200 Q100,180 200,220 T400,150 T600,100 T800,180 T1000,50 L1000,300 L0,300 Z"
+                                fill="url(#appleGradient)"></path>
+                            <path d="M0,200 Q100,180 200,220 T400,150 T600,100 T800,180 T1000,50" fill="none"
+                                stroke="url(#strokeGradient)" stroke-linecap="round" stroke-width="3"></path>
+                            <circle cx="200" cy="220" fill="#064e3b" r="5" stroke="white" stroke-width="2"></circle>
+                            <circle cx="400" cy="150" fill="#064e3b" r="5" stroke="white" stroke-width="2"></circle>
+                            <circle cx="600" cy="100" fill="#1e3a8a" r="5" stroke="white" stroke-width="2"></circle>
+                            <circle cx="800" cy="180" fill="#1e3a8a" r="5" stroke="white" stroke-width="2"></circle>
+                        </svg>
+                        <div
+                            class="flex justify-between text-[11px] text-[#86868b] font-medium pt-4 border-t border-[#f2f2f2]">
+                            <span>WEEK 1</span>
+                            <span>WEEK 2</span>
+                            <span>WEEK 3</span>
+                            <span>WEEK 4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="apple-card">
+                    <h3 class="font-semibold text-xl mb-10">Location Ranking</h3>
+                    <div class="space-y-8">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-[#1d1d1f] font-medium">Downtown Hub</span>
+                                <span class="text-[#86868b] font-normal">4.9 / 5.0</span>
+                            </div>
+                            <div class="w-full bg-[#f5f5f7] h-1.5 rounded-full overflow-hidden">
+                                <div class="gradient-accent h-full rounded-full" style="width: 98%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-[#1d1d1f] font-medium">East Side Bistro</span>
+                                <span class="text-[#86868b] font-normal">4.2 / 5.0</span>
+                            </div>
+                            <div class="w-full bg-[#f5f5f7] h-1.5 rounded-full overflow-hidden">
+                                <div class="gradient-accent h-full rounded-full" style="width: 84%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-[#1d1d1f] font-medium">West Mall Outlet</span>
+                                <span class="text-[#86868b] font-normal">3.8 / 5.0</span>
+                            </div>
+                            <div class="w-full bg-[#f5f5f7] h-1.5 rounded-full overflow-hidden">
+                                <div class="gradient-accent h-full rounded-full opacity-70" style="width: 76%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-[#1d1d1f] font-medium">Airport Lounge</span>
+                                <span class="text-[#86868b] font-normal">4.5 / 5.0</span>
+                            </div>
+                            <div class="w-full bg-[#f5f5f7] h-1.5 rounded-full overflow-hidden">
+                                <div class="gradient-accent h-full rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="apple-card relative overflow-hidden">
+                    <div class="flex items-center gap-2 mb-8">
+                        <span class="material-symbols-outlined text-[#064e3b]">check_circle</span>
+                        <h3 class="font-semibold text-xl">Top Keyphrases</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-4 items-center justify-center min-h-[160px]">
+                        <span class="text-3xl font-semibold text-brand-deep">Exceptional Service</span>
+                        <span class="text-xl font-light text-[#86868b]">Fast Delivery</span>
+                        <span class="text-2xl font-medium text-brand-blue">Friendly Staff</span>
+                        <span class="text-lg font-light text-[#86868b]">High Quality</span>
+                        <span class="text-3xl font-light text-brand-deep">Highly Recommended</span>
+                        <span class="text-2xl font-semibold text-brand-blue">Proactive Support</span>
+                    </div>
+                </div>
+                <div class="apple-card relative overflow-hidden">
+                    <div class="flex items-center gap-2 mb-8">
+                        <span class="material-symbols-outlined text-brand-blue">trending_up</span>
+                        <h3 class="font-semibold text-xl">Improvement Areas</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-4 items-center justify-center min-h-[160px]">
+                        <span class="text-3xl font-semibold text-brand-blue">Wait Times</span>
+                        <span class="text-xl font-light text-[#86868b]">Phone Support</span>
+                        <span class="text-2xl font-medium text-brand-deep">Parking</span>
+                        <span class="text-lg font-light text-[#86868b]">Stock Levels</span>
+                        <span class="text-3xl font-light text-brand-blue">Consistency</span>
+                    </div>
+                </div>
+            </div>
+            <div class="apple-card !p-0 overflow-hidden">
+                <div
+                    class="p-8 border-b border-[#f2f2f2] flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <h3 class="font-semibold text-xl">Recent Activity</h3>
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <span
+                                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#86868b] text-[20px]">search</span>
+                            <input
+                                class="pl-10 pr-4 py-2 bg-[#f5f5f7] border-none rounded-full text-sm focus:ring-1 focus:ring-brand-blue/30 w-64"
+                                placeholder="Search activity..." type="text" />
+                        </div>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead
+                            class="bg-[#fbfbfd] text-[#86868b] text-[10px] font-semibold uppercase tracking-widest border-b border-[#f2f2f2]">
+                            <tr>
+                                <th class="px-8 py-5">Customer</th>
+                                <th class="px-8 py-5">Rating</th>
+                                <th class="px-8 py-5">Summary</th>
+                                <th class="px-8 py-5">Location</th>
+                                <th class="px-8 py-5">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#f2f2f2]">
+                            <tr class="hover:bg-[#fbfbfd] transition-colors">
+                                <td class="px-8 py-6">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-full gradient-accent flex items-center justify-center text-white font-medium text-[10px]">
+                                            JS</div>
+                                        <span class="font-medium text-sm">James Smith</span>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-6">
+                                    <div class="flex text-[#064e3b]">
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-6 text-sm text-[#86868b] font-light max-w-xs truncate">
+                                    "Absolutely fantastic service, the staff was attentive and..."
+                                </td>
+                                <td class="px-8 py-6 text-sm font-normal">Downtown Hub</td>
+                                <td class="px-8 py-6">
+                                    <span
+                                        class="px-3 py-1 bg-[#10b981]/10 text-[#064e3b] text-[10px] font-semibold rounded-full uppercase">Responded</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-[#fbfbfd] transition-colors">
+                                <td class="px-8 py-6">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-medium text-[10px]">
+                                            LR</div>
+                                        <span class="font-medium text-sm">Linda Ray</span>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-6">
+                                    <div class="flex text-[#86868b]">
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px]">star</span>
+                                        <span class="material-symbols-outlined text-[16px]">star</span>
+                                        <span class="material-symbols-outlined text-[16px]">star</span>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-6 text-sm text-[#86868b] font-light max-w-xs truncate">
+                                    "Wait time was nearly 45 minutes even with a reservation."
+                                </td>
+                                <td class="px-8 py-6 text-sm font-normal">West Mall Outlet</td>
+                                <td class="px-8 py-6">
+                                    <span
+                                        class="px-3 py-1 bg-brand-blue/10 text-brand-blue text-[10px] font-semibold rounded-full uppercase">Pending</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-6 bg-[#fbfbfd] flex items-center justify-between border-t border-[#f2f2f2]">
+                    <p class="text-xs text-[#86868b] font-light">Showing 1-10 of 2,842</p>
+                    <div class="flex gap-2">
+                        <button
+                            class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white border border-transparent hover:border-[#d2d2d7] transition-all">
+                            <span class="material-symbols-outlined text-sm">chevron_left</span>
+                        </button>
+                        <button
+                            class="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-[#d2d2d7] text-xs font-semibold">1</button>
+                        <button
+                            class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white text-xs font-light">2</button>
+                        <button
+                            class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white text-xs font-light">3</button>
+                        <button
+                            class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white border border-transparent hover:border-[#d2d2d7] transition-all">
+                            <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>
