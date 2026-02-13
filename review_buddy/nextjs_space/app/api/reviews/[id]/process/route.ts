@@ -178,7 +178,7 @@ export async function POST(
               confidenceScore: decisionResult?.confidenceScore ?? 0,
               decisionRationale: decisionResult?.rationale ?? '',
               sentiment: riskAssessment?.sentiment ?? null,
-              topics: riskAssessment?.topics ? JSON.stringify(riskAssessment.topics) : null,
+              topics: riskAssessment?.topics || [],
               generatedResponse: generatedResponse || null,
               responseStatus: decisionResult?.decision === 'AUTO_HANDLE' ? 'generated' : 'pending',
               status: statusMap[decisionResult?.decision ?? 'HOLD_FOR_APPROVAL'] ?? 'pending_approval',
