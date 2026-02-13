@@ -136,7 +136,7 @@ export default function DashboardPage() {
     ? Math.round((overview.autoHandled / overview.totalReviews) * 100)
     : 0;
 
-  const needsAttention = queues.escalated + queues.pendingApproval;
+  const needsAttention = queues.escalated + queues.pendingApproval + queues.newReviews;
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -203,7 +203,7 @@ export default function DashboardPage() {
           {needsAttention > 0 ? (
             <div className="space-y-4">
               {queues.escalated > 0 && (
-                <Link href="/dashboard/queue" className="block">
+                <Link href="/dashboard/queue?tab=escalated" className="block">
                   <div className="flex items-center justify-between p-6 bg-red-50/50 rounded-2xl hover:bg-red-50 transition-all border border-red-100/50 group">
                     <div className="flex items-center gap-6">
                       <div className="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center text-red-600">
@@ -220,7 +220,7 @@ export default function DashboardPage() {
               )}
 
               {queues.pendingApproval > 0 && (
-                <Link href="/dashboard/queue" className="block">
+                <Link href="/dashboard/queue?tab=pending" className="block">
                   <div className="flex items-center justify-between p-6 bg-amber-50/50 rounded-2xl hover:bg-amber-50 transition-all border border-amber-100/50 group">
                     <div className="flex items-center gap-6">
                       <div className="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-600">
@@ -232,6 +232,23 @@ export default function DashboardPage() {
                       </div>
                     </div>
                     <ArrowRight className="h-6 w-6 text-slate-300 group-hover:text-amber-500 transition-colors" />
+                  </div>
+                </Link>
+              )}
+
+              {queues.newReviews > 0 && (
+                <Link href="/dashboard/reviews?status=new" className="block">
+                  <div className="flex items-center justify-between p-6 bg-blue-50/50 rounded-2xl hover:bg-blue-50 transition-all border border-blue-100/50 group">
+                    <div className="flex items-center gap-6">
+                      <div className="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600">
+                        <MessageSquare className="h-6 w-6" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-slate-900 text-lg">{queues.newReviews} New Reviews</p>
+                        <p className="text-slate-500 font-light">Unprocessed - Review now</p>
+                      </div>
+                    </div>
+                    <ArrowRight className="h-6 w-6 text-slate-300 group-hover:text-blue-500 transition-colors" />
                   </div>
                 </Link>
               )}

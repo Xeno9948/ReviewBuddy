@@ -21,7 +21,12 @@ export async function POST(request: NextRequest) {
         });
 
         if (result.success) {
-            return NextResponse.json({ message: 'Test message sent' });
+            console.log('WhatsApp Test Success, SID:', result.messageId);
+            return NextResponse.json({
+                message: 'Test message sent',
+                sid: result.messageId,
+                note: 'Check Twilio Console > Monitor > Logs for this SID to see delivery status.'
+            });
         } else {
             return NextResponse.json({ error: result.error }, { status: 500 });
         }
