@@ -54,9 +54,7 @@ export function Sidebar({ user }: SidebarProps) {
       <aside className="hidden lg:flex flex-col w-72 glass border-r border-apple-border h-screen fixed z-50">
         <div className="h-20 flex items-center px-8 pt-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-start to-brand-end flex items-center justify-center">
-              <span className="text-white font-bold text-xl">R</span>
-            </div>
+            <Image src="/logo.png" alt="ReviewBuddy" width={40} height={40} className="w-10 h-10 rounded-xl" />
             <span className="text-xl font-semibold tracking-tight text-slate-800">ReviewBuddy</span>
           </div>
         </div>
@@ -72,9 +70,7 @@ export function Sidebar({ user }: SidebarProps) {
       {/* Logo */}
       <div className={cn("h-24 flex items-center px-8 pt-6", collapsed && "justify-center px-0")}>
         <Link href="/dashboard" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-start to-brand-end flex items-center justify-center shadow-lg shadow-brand-end/20">
-            {collapsed ? <span className="text-white font-bold text-xl">R</span> : <Image src="/logo.png" alt="R" width={24} height={24} className="w-6 h-6 brightness-0 invert" />}
-          </div>
+          <Image src="/logo.png" alt="ReviewBuddy" width={40} height={40} className="w-10 h-10 rounded-xl" />
           {!collapsed && <span className="text-xl font-semibold tracking-tight text-slate-800">ReviewBuddy</span>}
         </Link>
       </div>
@@ -158,9 +154,7 @@ export function MobileHeader({ user }: SidebarProps) {
     return (
       <header className="lg:hidden flex items-center justify-between h-16 px-6 glass fixed w-full top-0 z-40 border-b border-apple-border">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-start to-brand-end flex items-center justify-center">
-            <span className="text-white font-bold text-sm">R</span>
-          </div>
+          <Image src="/logo.png" alt="ReviewBuddy" width={32} height={32} className="w-8 h-8 rounded-xl" />
           <span className="font-semibold text-slate-800">ReviewBuddy</span>
         </div>
       </header>
@@ -170,9 +164,7 @@ export function MobileHeader({ user }: SidebarProps) {
   return (
     <header className="lg:hidden flex items-center justify-between h-16 px-6 glass fixed w-full top-0 z-40 border-b border-apple-border">
       <Link href="/dashboard" className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-start to-brand-end flex items-center justify-center shadow-md">
-          <Image src="/logo.png" alt="R" width={20} height={20} className="w-5 h-5 brightness-0 invert" />
-        </div>
+        <Image src="/logo.png" alt="ReviewBuddy" width={32} height={32} className="w-8 h-8 rounded-xl" />
         <span className="font-semibold text-slate-800 tracking-tight">ReviewBuddy</span>
       </Link>
       <button

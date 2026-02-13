@@ -16,8 +16,22 @@ export async function sendWhatsAppNotification(params: {
         });
 
         if (!config || !config.twilioAccountSid || !config.twilioAuthToken || !config.twilioPhoneNumber || !config.whatsappAdminNumber) {
-            console.log('WhatsApp notification skipped: Missing configuration');
-            return { success: false, error: 'WhatsApp not configured' };
+            console.log('WhatsApp notification skipped: Missing configuration', {
+                hasConfig: !!config,
+                hasSid: !!config?.twilioAccountSid,
+                hasToken: !!config?.twilioAuthToken,
+                hasPhone: !!config?.twilioPhoneNumber,
+                hasAdmin: !!config?.whatsappAdminNumber
+            });
+            // Log masked values for debugging (safe to log first/last few chars)
+            if (config) {
+                console.log('Debug Config:', {
+                    sid: config.twilioAccountSid ? `${config.twilioAccountSid.substring(0, 4)}...` : 'MISSING',
+                    from: config.twilioPhoneNumber,
+                    to: config.whatsappAdminNumber
+                });
+            }
+            return { success: false, error: 'WhatsApp not configured (Missing credentials)' };
         }
 
         const client = twilio(config.twilioAccountSid, config.twilioAuthToken);
