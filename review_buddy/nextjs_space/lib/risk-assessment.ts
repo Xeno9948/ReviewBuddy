@@ -32,6 +32,10 @@ Analyze this review for THREE RISK CATEGORIES:
    - Prior unresolved issues mentioned
    - Previous negative interactions referenced
 
+4. SENTIMENT & TOPICS - Determine:
+   - SENTIMENT: Is the overall tone Positive, Neutral, or Negative?
+   - TOPICS: Extract 2-4 key themes or topics mentioned (e.g., "Customer Service", "Product Quality", "Pricing").
+
 IMPORTANT RULES:
 - When uncertain, choose the HIGHER risk level
 - PII detection should flag ANY personal information
@@ -44,6 +48,8 @@ Respond in JSON format ONLY:
   "contextualRisk": "Low" | "Medium" | "High",
   "piiDetected": true | false,
   "legalRiskDetected": true | false,
+  "sentiment": "Positive" | "Neutral" | "Negative",
+  "topics": ["topic1", "topic2"],
   "details": {
     "contentRiskFactors": ["list of specific factors found"],
     "reputationalRiskFactors": ["list of specific factors found"],

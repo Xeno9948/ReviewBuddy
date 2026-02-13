@@ -9,17 +9,17 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
-  
+
   if (!session?.user) {
     redirect('/login');
   }
-  
+
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-apple-bg flex">
       <Sidebar user={session.user} />
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div className="flex-1 flex flex-col min-h-screen lg:ml-72 transition-all duration-300">
         <MobileHeader user={session.user} />
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-8 lg:p-12 overflow-auto">
           {children}
         </main>
       </div>

@@ -141,15 +141,15 @@ export default function DashboardPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-800">Dashboard</h1>
-          <p className="text-sm text-slate-500 mt-1">Overview of your review management</p>
+          <h1 className="text-4xl font-semibold tracking-tight text-slate-900">Dashboard</h1>
+          <p className="text-lg text-slate-500 mt-2 font-light">Overview of your review management</p>
         </div>
         <Button
           onClick={handleFetchReviews}
           disabled={fetchingReviews}
-          className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-xl shadow-sm"
+          className="bg-gradient-to-r from-brand-start to-brand-end hover:opacity-90 text-white rounded-full shadow-lg shadow-brand-end/20 px-6 py-6"
         >
           <RefreshCw className={`h-4 w-4 mr-2 ${fetchingReviews ? 'animate-spin' : ''}`} />
           Sync Reviews
@@ -157,104 +157,92 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500">Total Reviews</p>
-              <p className="text-2xl font-semibold text-slate-800 mt-1">{overview.totalReviews}</p>
-            </div>
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-              <MessageSquare className="h-5 w-5 text-slate-600" />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white rounded-3xl p-8 border border-white card-shadow transition-all hover:scale-[1.02]">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">Total Reviews</p>
+            <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center">
+              <MessageSquare className="h-4 w-4 text-slate-400" />
             </div>
           </div>
+          <p className="text-4xl font-light text-slate-900">{overview.totalReviews}</p>
         </div>
 
-        <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500">Auto-handled</p>
-              <p className="text-2xl font-semibold text-emerald-600 mt-1">{autoHandledPercent}%</p>
-            </div>
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-200 flex items-center justify-center">
-              <CheckCircle2 className="h-5 w-5 text-emerald-600" />
-            </div>
+        <div className="bg-white rounded-3xl p-8 border border-white card-shadow transition-all hover:scale-[1.02]">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">Auto-Handled</p>
+            <span className="text-emerald-600 text-xs font-medium bg-emerald-50 px-2 py-1 rounded-full">{autoHandledPercent}%</span>
           </div>
+          <p className="text-4xl font-light text-slate-900">{overview.autoHandled}</p>
         </div>
 
-        <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500">Avg Rating</p>
-              <p className="text-2xl font-semibold text-slate-800 mt-1">{overview.avgRating}</p>
-            </div>
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
-              <Star className="h-5 w-5 text-amber-600" />
+        <div className="bg-white rounded-3xl p-8 border border-white card-shadow transition-all hover:scale-[1.02]">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">Avg Rating</p>
+            <div className="flex text-amber-400 gap-0.5">
+              <Star className="h-4 w-4 fill-current" />
             </div>
           </div>
+          <p className="text-4xl font-light text-slate-900">{overview.avgRating}</p>
         </div>
 
-        <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500">AI Confidence</p>
-              <p className="text-2xl font-semibold text-slate-800 mt-1">{overview.avgConfidenceScore}%</p>
-            </div>
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-              <TrendingUp className="h-5 w-5 text-slate-600" />
-            </div>
+        <div className="bg-white rounded-3xl p-8 border border-white card-shadow transition-all hover:scale-[1.02]">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">Confidence</p>
+            <span className="text-brand-end text-xs font-medium bg-blue-50 px-2 py-1 rounded-full">AI</span>
           </div>
+          <p className="text-4xl font-light text-slate-900">{overview.avgConfidenceScore}%</p>
         </div>
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Needs Attention */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm lg:col-span-2">
-          <h2 className="text-lg font-semibold text-slate-800 mb-4">Needs Attention</h2>
+        <div className="bg-white rounded-3xl p-8 border border-white card-shadow lg:col-span-2">
+          <h2 className="text-xl font-semibold text-slate-900 mb-6">Needs Attention</h2>
           {needsAttention > 0 ? (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {queues.escalated > 0 && (
                 <Link href="/dashboard/queue" className="block">
-                  <div className="flex items-center justify-between p-4 bg-gradient-to-r from-red-50 to-red-100/50 rounded-xl hover:from-red-100 hover:to-red-100 transition-all border border-red-100">
-                    <div className="flex items-center gap-4">
-                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-red-400 to-red-500 flex items-center justify-center shadow-sm">
-                        <AlertTriangle className="h-5 w-5 text-white" />
+                  <div className="flex items-center justify-between p-6 bg-red-50/50 rounded-2xl hover:bg-red-50 transition-all border border-red-100/50 group">
+                    <div className="flex items-center gap-6">
+                      <div className="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center text-red-600">
+                        <AlertTriangle className="h-6 w-6" />
                       </div>
                       <div>
-                        <p className="font-medium text-slate-800">{queues.escalated} Escalated Reviews</p>
-                        <p className="text-sm text-slate-500">Requires human review</p>
+                        <p className="font-semibold text-slate-900 text-lg">{queues.escalated} Escalated Reviews</p>
+                        <p className="text-slate-500 font-light">Requires human review</p>
                       </div>
                     </div>
-                    <ArrowRight className="h-5 w-5 text-slate-400" />
+                    <ArrowRight className="h-6 w-6 text-slate-300 group-hover:text-red-500 transition-colors" />
                   </div>
                 </Link>
               )}
 
               {queues.pendingApproval > 0 && (
                 <Link href="/dashboard/queue" className="block">
-                  <div className="flex items-center justify-between p-4 bg-gradient-to-r from-amber-50 to-amber-100/50 rounded-xl hover:from-amber-100 hover:to-amber-100 transition-all border border-amber-100">
-                    <div className="flex items-center gap-4">
-                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center shadow-sm">
-                        <Clock className="h-5 w-5 text-white" />
+                  <div className="flex items-center justify-between p-6 bg-amber-50/50 rounded-2xl hover:bg-amber-50 transition-all border border-amber-100/50 group">
+                    <div className="flex items-center gap-6">
+                      <div className="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-600">
+                        <Clock className="h-6 w-6" />
                       </div>
                       <div>
-                        <p className="font-medium text-slate-800">{queues.pendingApproval} Pending Approval</p>
-                        <p className="text-sm text-slate-500">Awaiting your decision</p>
+                        <p className="font-semibold text-slate-900 text-lg">{queues.pendingApproval} Pending Approval</p>
+                        <p className="text-slate-500 font-light">Awaiting your decision</p>
                       </div>
                     </div>
-                    <ArrowRight className="h-5 w-5 text-slate-400" />
+                    <ArrowRight className="h-6 w-6 text-slate-300 group-hover:text-amber-500 transition-colors" />
                   </div>
                 </Link>
               )}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-12 text-center">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-500 flex items-center justify-center mb-4 shadow-sm">
-                <CheckCircle2 className="h-7 w-7 text-white" />
+            <div className="flex flex-col items-center justify-center py-16 text-center bg-slate-50/50 rounded-3xl border border-dashed border-slate-200">
+              <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mb-4">
+                <CheckCircle2 className="h-8 w-8 text-emerald-600" />
               </div>
-              <p className="font-medium text-slate-800">All caught up!</p>
-              <p className="text-sm text-slate-500 mt-1">No reviews need your attention</p>
+              <p className="font-medium text-slate-900 text-lg">All caught up!</p>
+              <p className="text-slate-500 font-light">No reviews need your attention</p>
             </div>
           )}
         </div>

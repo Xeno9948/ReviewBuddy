@@ -51,10 +51,14 @@ export function Sidebar({ user }: SidebarProps) {
 
   if (!mounted) {
     return (
-      <aside className="hidden lg:flex flex-col w-64 bg-white border-r border-slate-200 h-screen">
-        <div className="h-16 flex items-center px-6 border-b border-slate-100">
-          <div className="h-8 w-8 bg-slate-100 rounded-xl" />
-          <span className="ml-3 font-semibold text-slate-800">ReviewBuddy</span>
+      <aside className="hidden lg:flex flex-col w-72 glass border-r border-apple-border h-screen fixed z-50">
+        <div className="h-20 flex items-center px-8 pt-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-start to-brand-end flex items-center justify-center">
+              <span className="text-white font-bold text-xl">R</span>
+            </div>
+            <span className="text-xl font-semibold tracking-tight text-slate-800">ReviewBuddy</span>
+          </div>
         </div>
       </aside>
     );
@@ -62,25 +66,30 @@ export function Sidebar({ user }: SidebarProps) {
 
   return (
     <aside className={cn(
-      "hidden lg:flex flex-col bg-white border-r border-slate-200 h-screen transition-all duration-300",
-      collapsed ? "w-20" : "w-64"
+      "hidden lg:flex flex-col border-r border-apple-border h-screen transition-all duration-300 fixed z-50 glass",
+      collapsed ? "w-24" : "w-72"
     )}>
       {/* Logo */}
-      <div className="h-16 flex items-center justify-between px-4 border-b border-slate-100">
-        <Link href="/dashboard" className="flex items-center">
-          <Image src="/logo.png" alt="ReviewBuddy" width={32} height={32} className="h-8 w-8 rounded-xl" />
-          {!collapsed && <span className="ml-3 font-semibold text-slate-800">ReviewBuddy</span>}
+      <div className={cn("h-24 flex items-center px-8 pt-6", collapsed && "justify-center px-0")}>
+        <Link href="/dashboard" className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-start to-brand-end flex items-center justify-center shadow-lg shadow-brand-end/20">
+            {collapsed ? <span className="text-white font-bold text-xl">R</span> : <Image src="/logo.png" alt="R" width={24} height={24} className="w-6 h-6 brightness-0 invert" />}
+          </div>
+          {!collapsed && <span className="text-xl font-semibold tracking-tight text-slate-800">ReviewBuddy</span>}
         </Link>
+      </div>
+
+      <div className="flex justify-end px-4 mb-2">
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-1.5 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
+          className="p-1.5 rounded-full hover:bg-black/5 text-slate-400 hover:text-slate-600 transition-colors"
         >
           <ChevronLeft className={cn("h-4 w-4 transition-transform", collapsed && "rotate-180")} />
         </button>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-3 space-y-1">
+      <nav className="flex-1 px-4 space-y-2 py-4">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = getIsActive(item.href);
@@ -89,44 +98,49 @@ export function Sidebar({ user }: SidebarProps) {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
+                "flex items-center gap-3 px-4 py-3.5 rounded-3xl transition-all duration-300 group",
                 isActive
-                  ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-sm"
-                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
-                collapsed && "justify-center px-2"
+                  ? "bg-gradient-to-r from-brand-start to-brand-end text-white shadow-lg shadow-brand-end/20"
+                  : "text-slate-500 hover:bg-white/50 hover:text-slate-900",
+                collapsed && "justify-center px-0 w-12 h-12 mx-auto"
               )}
               title={collapsed ? item.label : undefined}
             >
-              <Icon className="h-5 w-5 flex-shrink-0" />
-              {!collapsed && item.label}
+              <Icon className={cn("h-5 w-5 flex-shrink-0", isActive ? "text-white" : "text-slate-400 group-hover:text-slate-600")} />
+              {!collapsed && <span className="font-medium tracking-wide text-sm">{item.label}</span>}
             </Link>
           );
         })}
       </nav>
 
       {/* User section */}
-      <div className="p-3 border-t border-slate-100">
-        {!collapsed && (
-          <div className="px-3 py-2 mb-2">
-            <p className="text-sm font-medium text-slate-800 truncate">
-              {user?.name ?? 'User'}
-            </p>
-            <p className="text-xs text-slate-500 truncate">
-              {user?.email ?? ''}
-            </p>
+      <div className="p-6 mt-auto">
+        {!collapsed ? (
+          <div className="flex items-center gap-4 bg-white/40 p-3 rounded-3xl border border-white/50 backdrop-blur-sm">
+            <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-slate-200 to-slate-100 border-2 border-white shadow-sm flex items-center justify-center text-slate-500 font-semibold">
+              {user.name?.[0] ?? 'U'}
+            </div>
+            <div className="overflow-hidden flex-1">
+              <p className="text-sm font-semibold text-slate-800 truncate">{user.name}</p>
+              <p className="text-[10px] text-slate-500 uppercase tracking-wider font-medium truncate">Administrator</p>
+            </div>
+            <button
+              onClick={() => signOut?.({ callbackUrl: '/login' })}
+              className="text-slate-400 hover:text-red-500 transition-colors"
+              title="Sign Out"
+            >
+              <LogOut className="h-4 w-4" />
+            </button>
           </div>
+        ) : (
+          <button
+            onClick={() => signOut?.({ callbackUrl: '/login' })}
+            className="w-12 h-12 rounded-full bg-white/40 flex items-center justify-center mx-auto hover:bg-red-50 hover:text-red-500 text-slate-400 transition-all border border-white/50"
+            title="Sign Out"
+          >
+            <LogOut className="h-5 w-5" />
+          </button>
         )}
-        <button
-          onClick={() => signOut?.({ callbackUrl: '/login' })}
-          className={cn(
-            "flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors",
-            collapsed && "justify-center px-2"
-          )}
-          title={collapsed ? "Sign Out" : undefined}
-        >
-          <LogOut className="h-5 w-5 flex-shrink-0" />
-          {!collapsed && "Sign Out"}
-        </button>
       </div>
     </aside>
   );
@@ -142,9 +156,11 @@ export function MobileHeader({ user }: SidebarProps) {
 
   if (!mounted) {
     return (
-      <header className="lg:hidden flex items-center justify-between h-14 px-4 bg-white border-b border-slate-200">
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 bg-slate-100 rounded-xl" />
+      <header className="lg:hidden flex items-center justify-between h-16 px-6 glass fixed w-full top-0 z-40 border-b border-apple-border">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-start to-brand-end flex items-center justify-center">
+            <span className="text-white font-bold text-sm">R</span>
+          </div>
           <span className="font-semibold text-slate-800">ReviewBuddy</span>
         </div>
       </header>
@@ -152,14 +168,16 @@ export function MobileHeader({ user }: SidebarProps) {
   }
 
   return (
-    <header className="lg:hidden flex items-center justify-between h-14 px-4 bg-white border-b border-slate-200">
-      <Link href="/dashboard" className="flex items-center gap-2">
-        <Image src="/logo.png" alt="ReviewBuddy" width={32} height={32} className="h-8 w-8 rounded-xl" />
-        <span className="font-semibold text-slate-800">ReviewBuddy</span>
+    <header className="lg:hidden flex items-center justify-between h-16 px-6 glass fixed w-full top-0 z-40 border-b border-apple-border">
+      <Link href="/dashboard" className="flex items-center gap-3">
+        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-start to-brand-end flex items-center justify-center shadow-md">
+          <Image src="/logo.png" alt="R" width={20} height={20} className="w-5 h-5 brightness-0 invert" />
+        </div>
+        <span className="font-semibold text-slate-800 tracking-tight">ReviewBuddy</span>
       </Link>
       <button
         onClick={() => signOut?.({ callbackUrl: '/login' })}
-        className="p-2 rounded-xl hover:bg-slate-100 text-slate-600 transition-colors"
+        className="p-2 rounded-full hover:bg-black/5 text-slate-500 transition-colors"
       >
         <LogOut className="h-5 w-5" />
       </button>

@@ -22,6 +22,16 @@ const config: Config = {
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        apple: {
+          bg: '#f5f5f7',
+          card: '#ffffff',
+          border: '#e5e5e7',
+          sidebar: 'rgba(255, 255, 255, 0.7)',
+        },
+        brand: {
+          start: '#064e3b',
+          end: '#1e3a8a',
+        },
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
